@@ -13,43 +13,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  email String
+model User {
+  id        Int    @id @default(autoincrement())
+  email     String @unique
   firstName String
-  lastName String
-  password String
-
+  lastName  String
+  password  String
   orders Orders[]
 
   @@map("users")
 }
 
-model Product{
-  id Int @id @default(autoincrement())
+model Product {
+  id          Int          @id @default(autoincrement())
   productName String
-  price  Float
-  orderItems OrderItems[]
+  price       Float
+  orderItems  OrderItems[]
 
   @@map("products")
 }
 
-model Orders{
-  id Int @id @default(autoincrement())
-  userId Int
-  user User @relation(fields: [userId], references: [id])
-  orderDate DateTime @default(now())
+model Orders {
+  id         Int          @id @default(autoincrement())
+  userId     Int
+  user       User         @relation(fields: [userId], references: [id])
+  orderDate  DateTime     @default(now())
+  OrderItems OrderItems[]
 
   @@map("orders")
-  OrderItems OrderItems[]
 }
 
-model OrderItems{
-  id Int @id @default(autoincrement())
-  orderId Int
+model OrderItems {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
   productId Int
-  quantity Int
-  order Orders @relation(fields: [orderId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
-
+  quantity  Int
+  order     Orders  @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }
