@@ -14,20 +14,21 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  email     String @unique
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
   firstName String
   lastName  String
   password  String
-  orders Orders[]
+  orders    Orders[]
 
   @@map("users")
 }
 
 model Product {
   id          Int          @id @default(autoincrement())
-  productName String
+  title       String
   price       Float
+  description String
   orderItems  OrderItems[]
 
   @@map("products")
