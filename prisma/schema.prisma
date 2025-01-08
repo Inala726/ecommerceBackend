@@ -29,6 +29,8 @@ model Product {
   title       String
   price       Float
   description String
+  image       String
+  category    String
   orderItems  OrderItems[]
 
   @@map("products")
