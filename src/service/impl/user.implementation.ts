@@ -2,9 +2,9 @@ import { db } from "../../config/db";
 import { User } from "@prisma/client";
 import { createUserDTO } from "../../dtos/userDTO.dto";
 import { hashPassword } from "../../utils/password.utils";
+import { comparePassword } from "../../utils/password.utils";
 import { CustomError } from "../../utils/customError.utils";
 import { userServices } from "../user.service";
-import bcryptjs from "bcryptjs";
 
 export class userServiceImplementation implements userServices {
   async registerUser(data: createUserDTO): Promise<User> {
@@ -25,20 +25,6 @@ export class userServiceImplementation implements userServices {
         password: await hashPassword(data.password),
       },
     });
-    return user;
-  }
-
-  async userLogin(email: string, password: string): Promise<User | null> {
-    const user = await db.user.findFirst({
-      where: { email },
-    });
-    if (!user) {
-      throw new Error("User with this email does not exist.");
-    }
-    const isPasswordValid = await bcryptjs.compare(password, user.password);
-    if (!isPasswordValid) {
-      throw new Error("Invalid credentials.");
-    }
     return user;
   }
 
